@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dxg="clr-namespace:DevExpress.Maui.DataGrid;assembly=DevExpress.Maui.DataGrid"
+             xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:viewmodels="clr-namespace:FoodStorePOS.ViewModels"
+             x:Class="FoodStorePOS.Views.MainPage"
+             x:DataType="viewmodels:MainViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+        <Grid ColumnDefinitions="*,Auto,Auto">
+            <Label Text="Food Store POS" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   VerticalOptions="Center"/>
+            <dxe:SimpleButton Grid.Column="1" 
+                             Text="Products"
+                             Command="{Binding NavigateToProductsCommand}"/>
+            <dxe:SimpleButton Grid.Column="2" 
+                             Text="Transactions"
+                             Command="{Binding NavigateToTransactionsCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+            <!-- Products List -->
+            <dxg:DataGridView Grid.Column="0"
+                             ItemsSource="{Binding Products}"
+                             SelectionMode="None">
+                <dxg:DataGridView.Columns>
+                    <dxg:TextColumn FieldName="Name" Caption="Product" />
+                    <dxg:NumberColumn FieldName="Price" Caption="Price" DisplayFormat="C2" />
+                    <dxg:NumberColumn FieldName="Stock" Caption="Stock" />
+                    <dxg:TemplateColumn Caption="Action">
+                        <dxg:TemplateColumn.DisplayTemplate>
+                            <DataTemplate>
+                                <dxe:SimpleButton Text="Add to Cart"
+                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=AddToCartCommand}"
+                                                 CommandParameter="{Binding .}"/>
+                            </DataTemplate>
+                        </dxg:TemplateColumn.DisplayTemplate>
+                    </dxg:TemplateColumn>
+                </dxg:DataGridView.Columns>
+            </dxg:DataGridView>
+
+            <!-- Cart -->
+            <Grid Grid.Column="1" WidthRequest="300" Padding="10,0,0,0">
+                <dxg:DataGridView ItemsSource="{Binding Cart}"
+                                 SelectionMode="None">
+                    <dxg:DataGridView.Columns>
+                        <dxg:NumberColumn FieldName="Quantity" Caption="Qty" />
+                        <dxg:NumberColumn FieldName="Price" Caption="Price" DisplayFormat="C2" />
+                        <dxg:NumberColumn FieldName="Subtotal" Caption="Subtotal" DisplayFormat="C2" />
+                    </dxg:DataGridView.Columns>
+                </dxg:DataGridView>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout>
+                <Label Text="Total:" FontSize="20" />
+                <Label Text="{Binding Total, StringFormat='${0:N2}'}" 
+                       FontSize="24" 
+                       FontAttributes="Bold" />
+            </VerticalStackLayout>
+            <dxe:SimpleButton Grid.Column="1" 
+                             Text="Complete Sale"
+                             Command="{Binding CompleteSaleCommand}"/>
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FoodStorePOS.MainPage">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+        <HorizontalStackLayout Spacing="10">
+            <Label Text="Food Store POS" FontSize="24" FontAttributes="Bold" />
+            <Button Text="Products" Clicked="OnProductsClicked" />
+            <Button Text="Transactions" Clicked="OnTransactionsClicked" />
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="1" x:Name="ProductsCollection" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" ColumnDefinitions="*,Auto,Auto">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Name}" FontSize="16" />
+                            <Label Text="{Binding Price, StringFormat='${0:N2}'}" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="1" Text="{Binding Stock, StringFormat='Stock: {0}'}" VerticalOptions="Center" />
+                        <Button Grid.Column="2" Text="Add to Cart" Clicked="OnAddToCartClicked" 
+                                CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout>
+                <Label Text="Total:" FontSize="20" />
+                <Label x:Name="TotalLabel" Text="$0.00" FontSize="24" FontAttributes="Bold" />
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="Complete Sale" Clicked="OnCompleteSaleClicked" />
+        </Grid>
+    </Grid>
+</ContentPage>

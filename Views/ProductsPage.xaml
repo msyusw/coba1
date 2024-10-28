@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dxg="clr-namespace:DevExpress.Maui.DataGrid;assembly=DevExpress.Maui.DataGrid"
+             xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+             xmlns:viewmodels="clr-namespace:FoodStorePOS.ViewModels"
+             x:Class="FoodStorePOS.Views.ProductsPage"
+             x:DataType="viewmodels:ProductsViewModel"
+             Title="Products">
+
+    <Grid RowDefinitions="Auto,*" Padding="20">
+        <dxe:SimpleButton Text="Add New Product" 
+                         Command="{Binding AddProductCommand}"/>
+        
+        <dxg:DataGridView Grid.Row="1"
+                          ItemsSource="{Binding Products}"
+                          SelectionMode="None">
+            <dxg:DataGridView.Columns>
+                <dxg:TextColumn FieldName="Name" Caption="Product" />
+                <dxg:NumberColumn FieldName="Price" Caption="Price" DisplayFormat="C2" />
+                <dxg:TextColumn FieldName="Category" Caption="Category" />
+                <dxg:NumberColumn FieldName="Stock" Caption="Stock" />
+                <dxg:TemplateColumn Caption="Action">
+                    <dxg:TemplateColumn.DisplayTemplate>
+                        <DataTemplate>
+                            <dxe:SimpleButton Text="Delete"
+                                             BackgroundColor="Red"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ProductsViewModel}}, Path=DeleteProductCommand}"
+                                             CommandParameter="{Binding .}"/>
+                        </DataTemplate>
+                    </dxg:TemplateColumn.DisplayTemplate>
+                </dxg:TemplateColumn>
+            </dxg:DataGridView.Columns>
+        </dxg:DataGridView>
+    </Grid>
+</ContentPage>
